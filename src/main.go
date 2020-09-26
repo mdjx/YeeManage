@@ -48,8 +48,8 @@ func main() {
 	brightnessPtr := flag.Int("brightness", -1, "brightness (optional, [0-359])")
 
 	// transition effects
-	durationPtr := flag.Int("hsvDuration", 500, "Transition Effect Duration (optional, [>30, default:500])")
-	effectPtr := flag.String("rgbEffect", "smooth", "Transition Effect (optional, [sudden, smooth (default)])")
+	durationPtr := flag.Int("duration", 500, "Transition Effect Duration (optional, [>30, default:500])")
+	effectPtr := flag.String("effect", "smooth", "Transition Effect (optional, [sudden, smooth (default)])")
 
 	flag.Parse()
 
