@@ -26,7 +26,7 @@ Turn on a globe
 
 Toggle the power
 
-`yeelight.exe -ip 192.168.1.55 --power=toggle`
+`yeelight.exe --ip=192.168.1.55 --power=toggle`
 
 Multiple commands can be used. Turn on a globe, set the color to RGB value #9400D3, and set the brightness to max (100). 
 
