@@ -85,7 +85,6 @@ func main() {
 
 	// set rgb
 	switch {
-	//case (*rgbPtr >= 0) && (*rgbPtr <= 16777215):
 	case (*rgbPtr != ""):
 		var rgbErr string = "Invalid RGB value, must be between 000000 and FFFFFF"
 		rgbDecimal, err := strconv.ParseInt(*rgbPtr, 16, 32)
