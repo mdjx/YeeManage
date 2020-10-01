@@ -98,9 +98,9 @@ func main() {
 		send_message(*ipPtr, message)
 	}
 
+	// manage colours
 	switch {
-	// set css colour
-
+	// set colour via css named values
 	case (*cssPtr != ""):
 		var cssInt interface{}
 		b := []byte(colours)
@@ -119,20 +119,18 @@ func main() {
 			send_message(*ipPtr, message)
 		}
 
-	// set hsv
-	case (*hsvHuePtr >= 0) && (*hsvSatPtr >= 0):
-		fmt.Println("Setting HSV on globe at " + *ipPtr)
-		message := "{\"id\":1,\"method\":\"set_hsv\",\"params\":[" + strconv.Itoa(*hsvHuePtr) + "," + strconv.Itoa(*hsvSatPtr) + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
-		send_message(*ipPtr, message)
-
-	// set rgb
+	// set colour via rgb
 	case (*rgbPtr != ""):
-
 		var rgbDecimal string = hexToDec(*rgbPtr)
 		fmt.Println("Setting RGB on globe at " + *ipPtr)
 		message := "{\"id\":1,\"method\":\"set_rgb\",\"params\":[" + rgbDecimal + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
 		send_message(*ipPtr, message)
 
+	// set colour via hsv
+	case (*hsvHuePtr >= 0) && (*hsvSatPtr >= 0):
+		fmt.Println("Setting HSV on globe at " + *ipPtr)
+		message := "{\"id\":1,\"method\":\"set_hsv\",\"params\":[" + strconv.Itoa(*hsvHuePtr) + "," + strconv.Itoa(*hsvSatPtr) + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
+		send_message(*ipPtr, message)
 	}
 
 	// set brightness

@@ -12,6 +12,7 @@ Downloadable binaries can be found on the releases page.
 yeelight.exe -ip <ip> 
     [-hsvHue <0-359>] 
     [-hsvSat <0-100>] 
+    [-css <red, blue, aqua, violet, etc>] 
     [-rgb <000000-FFFFFF>] 
     [-effect <sudden|smooth>]
     [-duration <30+>]
@@ -35,3 +36,11 @@ Multiple commands can be used. Turn on a globe, set the color to RGB value #9400
 Linux example showing HSV usage
 
 `./yeelight-linux --ip=10.250.1.117 --hsvHue=120 --hsvSat=100 --effect=sudden`
+
+## Release Notes
+
+`1.0`
+- Initial release
+
+`1.1`
+- Added CSS Named colour flag (`-css`). See [here](https://css-tricks.com/snippets/css/named-colors-and-hex-equivalents/) for a list of valid colours. 
