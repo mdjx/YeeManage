@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+//go:generate go run scripts/includejson.go
+
 func send_message(ip string, message string) {
 	conn, err := net.Dial("tcp", ip+":55443")
 	defer conn.Close()
@@ -52,6 +54,8 @@ func main() {
 	effectPtr := flag.String("effect", "smooth", "Transition Effect (optional, [sudden, smooth (default)])")
 
 	flag.Parse()
+
+	fmt.Println(colours)
 
 	// Check if IP is set, if not, exit
 	if *ipPtr == "" {
