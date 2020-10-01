@@ -1,12 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"net"
 	"os"
 	"strconv"
+	"strings"
 )
+
+//go:generate go run scripts/includejson.go
 
 func send_message(ip string, message string) {
 	conn, err := net.Dial("tcp", ip+":55443")
@@ -29,6 +33,23 @@ func isFlagPassed(name string) bool {
 	return found
 }
 
+func hexToDec(hex string) string {
+	var rgbErr string = "Invalid RGB value, must be between 000000 and FFFFFF"
+	rgbDecimal, err := strconv.ParseInt(hex, 16, 32)
+	if err != nil {
+		fmt.Println(rgbErr)
+		os.Exit(1)
+	}
+
+	if rgbDecimal < 0 || rgbDecimal > 16777215 {
+		fmt.Println(rgbErr)
+		os.Exit(1)
+	}
+
+	return strconv.Itoa(int(rgbDecimal))
+
+}
+
 func main() {
 
 	// IP of device
@@ -43,6 +64,9 @@ func main() {
 
 	// set_rgb
 	rgbPtr := flag.String("rgb", "", "rgb Hue (optional, [0-16777215])")
+
+	// set css colour
+	cssPtr := flag.String("css", "", "CSS Named Colour (aqua, red, blue, coral, etc)")
 
 	// set_bright
 	brightnessPtr := flag.Int("brightness", -1, "brightness (optional, [0-359])")
@@ -75,31 +99,40 @@ func main() {
 		send_message(*ipPtr, message)
 	}
 
-	// set hsv
+	// manage colours
 	switch {
+	// set colour via css named values
+	case (*cssPtr != ""):
+		var cssInt interface{}
+		b := []byte(colours)
+		err := json.Unmarshal(b, &cssInt)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		css := cssInt.(map[string]interface{})
+		colour := strings.ToLower(*cssPtr)
+
+		if css[colour] != nil {
+			var rgbValue string = css[colour].(string)
+			var rgbDecimal string = hexToDec(rgbValue)
+			message := "{\"id\":1,\"method\":\"set_rgb\",\"params\":[" + rgbDecimal + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
+			send_message(*ipPtr, message)
+		}
+
+	// set colour via rgb
+	case (*rgbPtr != ""):
+		var rgbDecimal string = hexToDec(*rgbPtr)
+		fmt.Println("Setting RGB on globe at " + *ipPtr)
+		message := "{\"id\":1,\"method\":\"set_rgb\",\"params\":[" + rgbDecimal + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
+		send_message(*ipPtr, message)
+
+	// set colour via hsv
 	case (*hsvHuePtr >= 0) && (*hsvSatPtr >= 0):
 		fmt.Println("Setting HSV on globe at " + *ipPtr)
 		message := "{\"id\":1,\"method\":\"set_hsv\",\"params\":[" + strconv.Itoa(*hsvHuePtr) + "," + strconv.Itoa(*hsvSatPtr) + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
 		send_message(*ipPtr, message)
-	}
-
-	// set rgb
-	switch {
-	case (*rgbPtr != ""):
-		var rgbErr string = "Invalid RGB value, must be between 000000 and FFFFFF"
-		rgbDecimal, err := strconv.ParseInt(*rgbPtr, 16, 32)
-		if err != nil {
-			fmt.Println(rgbErr)
-			os.Exit(1)
-		}
-
-		if rgbDecimal >= 0 && rgbDecimal <= 16777215 {
-			fmt.Println("Setting RGB on globe at " + *ipPtr)
-			message := "{\"id\":1,\"method\":\"set_rgb\",\"params\":[" + strconv.Itoa(int(rgbDecimal)) + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
-			send_message(*ipPtr, message)
-		} else {
-			fmt.Println(rgbErr)
-		}
 	}
 
 	// set brightness
