@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"strconv"
+	"strings"
 )
 
 //go:generate go run scripts/includejson.go
@@ -111,9 +112,10 @@ func main() {
 		}
 
 		css := cssInt.(map[string]interface{})
+		colour := strings.ToLower(*cssPtr)
 
-		if css[*cssPtr] != nil {
-			var rgbValue string = css[*cssPtr].(string)
+		if css[colour] != nil {
+			var rgbValue string = css[colour].(string)
 			var rgbDecimal string = hexToDec(rgbValue)
 			message := "{\"id\":1,\"method\":\"set_rgb\",\"params\":[" + rgbDecimal + ",\"" + *effectPtr + "\"," + strconv.Itoa(*durationPtr) + "]}"
 			send_message(*ipPtr, message)
