@@ -41,6 +41,12 @@ Linux example showing HSV usage
 
 `./yeelight-linux --ip=10.250.1.117 --hsvHue=120 --hsvSat=100 --effect=sudden`
 
+## Supported Globes
+
+Currently I can only guarantee will work with the `Smart LED Bulb 1S (COLOR)` as that's all I have access to. 
+
+If you've successfully used this with other globes, please let me know so I can add them to this doc.
+
 ## Release Notes
 
 `1.0`
