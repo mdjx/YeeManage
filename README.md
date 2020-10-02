@@ -43,7 +43,7 @@ Linux example showing HSV usage
 
 ## Supported Globes
 
-Currently I can only guarantee will work with the `Smart LED Bulb 1S (COLOR)` as that's all I have access to. 
+Currently I can only guarantee this will work with the `Smart LED Bulb 1S (COLOR)` as that's all I have access to. 
 
 If you've successfully used this with other globes, please let me know so I can add them to this doc.
 
