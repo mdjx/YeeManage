@@ -4,7 +4,7 @@ Windows and Linux command line tool for controlling Yeelight colour smart globes
 
 ## Binaries
 
-Downloadable binaries can be found on the releases page. 
+Downloadable binaries for Windows, Linux, and OSX can be found on the releases page. 
 
 ## Usage
 
